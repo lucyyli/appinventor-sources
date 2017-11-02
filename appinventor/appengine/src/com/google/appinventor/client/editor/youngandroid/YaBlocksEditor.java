@@ -376,6 +376,19 @@ public final class YaBlocksEditor extends FileEditor
       return blocksEditor.myFormEditor.getComponentInstanceTypeName(instanceName);
   }
 
+  public static String getAllComponents(String formName) {
+      //use form name to get blocks editor
+      YaBlocksEditor blocksEditor = formToBlocksEditor.get(formName);
+      //get type name from form editor
+      return blocksEditor.myFormEditor.getAllComponents();
+  }
+
+  public static String getAllBlockComponents(String formName) {
+      //use form name to get blocks editor
+      YaBlocksEditor blocksEditor = formToBlocksEditor.get(formName);
+      return blocksEditor.getRawFileContent();
+  }
+
   public void addComponent(String typeName, String instanceName, String uuid) {
     if (componentUuids.add(uuid)) {
       blocksArea.addComponent(uuid, instanceName, typeName);

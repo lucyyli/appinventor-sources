@@ -267,6 +267,8 @@ public class BlocklyPanel extends HTMLPanel {
     }
     try {
       doSendJson(formJson, packageName);
+      getCurrentComponents(getAllComponents(formName),"designer");
+      getCurrentComponents(getAllBlockComponents(formName),"blocks");
     } catch (JavaScriptException e) {
       throw new YailGenerationException(e.getDescription(), formName);
     }
@@ -407,6 +409,14 @@ public class BlocklyPanel extends HTMLPanel {
     return YaBlocksEditor.getComponentInstanceTypeName(formName, instanceName);
   }
 
+  public static String getAllComponents(String formName) {
+    return YaBlocksEditor.getAllComponents(formName);
+  }
+
+  public static String getAllBlockComponents(String formName) {
+    return YaBlocksEditor.getAllBlockComponents(formName);
+  }
+
   public static int getYaVersion() {
     return YaVersion.YOUNG_ANDROID_VERSION;
   }
@@ -536,6 +546,10 @@ public class BlocklyPanel extends HTMLPanel {
         $entry(@com.google.appinventor.client.editor.youngandroid.BlocklyPanel::SetDialogContent(Lcom/google/gwt/user/client/ui/DialogBox;Ljava/lang/String;));
     $wnd.BlocklyPanel_getComponentInstanceTypeName =
         $entry(@com.google.appinventor.client.editor.youngandroid.BlocklyPanel::getComponentInstanceTypeName(Ljava/lang/String;Ljava/lang/String;));
+    $wnd.BlocklyPanel_getAllComponents =
+        $entry(@com.google.appinventor.client.editor.youngandroid.BlocklyPanel::getAllComponents(Ljava/lang/String;));
+    $wnd.BlocklyPanel_getAllBlockComponents =
+        $entry(@com.google.appinventor.client.editor.youngandroid.BlocklyPanel::getAllBlockComponents(Ljava/lang/String;));
     $wnd.BlocklyPanel_getComponentInfo =
         $entry(@com.google.appinventor.client.editor.youngandroid.BlocklyPanel::getComponentInfo(Ljava/lang/String;));
     $wnd.BlocklyPanel_getComponentsJSONString =
@@ -735,6 +749,16 @@ public class BlocklyPanel extends HTMLPanel {
   public native void doSendJson(String formJson, String packageName) /*-{
     Blockly.ReplMgr.sendFormData(formJson, packageName,
       this.@com.google.appinventor.client.editor.youngandroid.BlocklyPanel::workspace);
+  }-*/;
+
+  public native void getCurrentComponents(String components, String type) /*-{
+    frame=$wnd.document.getElementById("tutorialFrame");
+    if (type == "blocks") {
+      frame.contentWindow.postMessage({type:"blocks", info:components}, '*');
+    }
+    if (type == "designer") {
+      frame.contentWindow.postMessage({type:"designer", info:components}, '*');
+    }
   }-*/;
 
   public native void doResetYail() /*-{

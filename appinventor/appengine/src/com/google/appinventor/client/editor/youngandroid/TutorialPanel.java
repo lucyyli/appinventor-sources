@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class TutorialPanel extends Frame {
   static {
     exportMethodsToJavascript();
+
   }
 
   /**
@@ -90,6 +91,37 @@ public class TutorialPanel extends Frame {
     dialogBox.show();
   }
 
+  /**
+   * Creates text on page!
+   */
+  private static void createTextDialog(String textInput) {
+    // Create the UI elements of the DialogBox
+    final DialogBox dialogBox = new DialogBox(true, true); // DialogBox(autohide, modal)
+    dialogBox.setStylePrimaryName("ode-DialogBox");
+    dialogBox.setText("Help");
+    dialogBox.setGlassEnabled(true);
+    dialogBox.setAnimationEnabled(true);
+    VerticalPanel DialogBoxContents = new VerticalPanel();
+    // Adds Youtube Video
+    HTML message = new HTML("<p>" + textInput + "</p>");
+    message.setStyleName("DialogBox-message");
+    FlowPanel holder = new FlowPanel();
+    Button ok = new Button("Close");
+    ok.addClickListener(new ClickListener() {
+        public void onClick(Widget sender) {
+          dialogBox.hide();
+        }
+      });
+    ok.setStyleName("DialogBox-button");
+    holder.add(ok);
+    DialogBoxContents.add(message);
+    DialogBoxContents.add(holder);
+    dialogBox.setWidget(DialogBoxContents);
+    dialogBox.center();
+    dialogBox.show();
+  }
+
+
   public static void getTutorialDialog(String tutorialId) {
     createVideoDialog(tutorialId);
   }
@@ -98,15 +130,21 @@ public class TutorialPanel extends Frame {
     createImageDialog(img);
   }
 
+  public static void getTextDialog(String textInput) {
+    createTextDialog(textInput);
+  }
+
   private static native void exportMethodsToJavascript() /*-{
     $wnd.TutorialPanel_createTutorialDialog =
     $entry(@com.google.appinventor.client.editor.youngandroid.TutorialPanel::getTutorialDialog(Ljava/lang/String;));
     $wnd.TutorialPanel_createImageDialog =
     $entry(@com.google.appinventor.client.editor.youngandroid.TutorialPanel::getImageDialog(Ljava/lang/String;));
+    $wnd.TutorialPanel_createTextDialog =
+    $entry(@com.google.appinventor.client.editor.youngandroid.TutorialPanel::getTextDialog(Ljava/lang/String;));
     $wnd.recieveMessage=function(event){
       if (event.data.type == "video") {
         $wnd.TutorialPanel_createTutorialDialog(event.data.youtubeId);
-      }
+      };
     };
     $wnd.addEventListener("message", $wnd.recieveMessage, false);
     $wnd.recieveMessage=function(event){
@@ -115,5 +153,12 @@ public class TutorialPanel extends Frame {
       }
     };
     $wnd.addEventListener("message", $wnd.recieveMessage, false);
+    $wnd.recieveMessage=function(event){
+      if (event.data.type == "text") {
+        $wnd.TutorialPanel_createTextDialog(event.data.textMessage);
+      }
+    };
+    $wnd.addEventListener("message", $wnd.recieveMessage, false);
   }-*/;
 }
+

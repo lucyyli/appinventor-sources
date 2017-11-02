@@ -931,6 +931,7 @@ public class Ode implements EntryPoint {
     // a tutorial URL, then we will set this visible when we load
     // the project
     tutorialPanel.setVisible(false);
+    tutorialPanel.getElement().setId("tutorialFrame");
 
     // Create tab panel for subsequent tabs
     deckPanel = new DeckPanel() {
@@ -2396,7 +2397,7 @@ public class Ode implements EntryPoint {
 
   public void setTutorialURL(String newURL) {
     if (newURL.isEmpty() || (!newURL.startsWith("http://appinventor.mit.edu/")
-        && !newURL.startsWith("http://appinv.us/"))) {
+        && !newURL.startsWith("http://appinv.us/") && !newURL.startsWith("http://localhost"))) {
       designToolbar.setTutorialToggleVisible(false);
       setTutorialVisible(false);
     } else {
